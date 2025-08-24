@@ -1,5 +1,7 @@
 package com.pragma.foodcourt.infrastructure.out.jpa.adapter;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.pragma.foodcourt.domain.model.Restaurant;
@@ -25,14 +27,8 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
 	}
 
 	@Override
-	public java.util.List<Restaurant> getAllRestaurants() {
-		java.util.List<RestaurantEntity> entities = restaurantRepository.findAll();
+	public List<Restaurant> getAllRestaurants() {
+		List<RestaurantEntity> entities = restaurantRepository.findAll();
 		return restaurantEntityMapper.toRestaurantList(entities);
-	}
-
-	@Override
-	public boolean existsByTaxId(Long taxId) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

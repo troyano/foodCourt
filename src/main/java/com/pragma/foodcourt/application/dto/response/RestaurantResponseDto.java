@@ -12,9 +12,9 @@ import lombok.Setter;
 public class RestaurantResponseDto {
     private Long id;
     private String name;
-    private Long taxId;
+    private String taxId;
     private String address;
     private String phone;
     private String logoUrl;
-    private Long createdBy;
+    private String createdBy;
 }

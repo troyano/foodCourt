@@ -6,5 +6,4 @@ import java.util.List;
 public interface IRestaurantPersistencePort {
     Restaurant createRestaurant(Restaurant restaurant);
     List<Restaurant> getAllRestaurants();
-    boolean existsByTaxId(Long taxId);
 }

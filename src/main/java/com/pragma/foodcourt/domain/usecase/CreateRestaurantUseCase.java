@@ -1,33 +1,40 @@
 package com.pragma.foodcourt.domain.usecase;
 
+import java.util.List;
+
 import com.pragma.foodcourt.domain.api.IRestaurantServicePort;
 import com.pragma.foodcourt.domain.clients.IUserRoleValidator;
 import com.pragma.foodcourt.domain.model.Restaurant;
+import com.pragma.foodcourt.domain.spi.IDomainNotificationPort;
 import com.pragma.foodcourt.domain.spi.IRestaurantPersistencePort;
+import com.pragma.foodcourt.domain.util.Constants;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class CreateRestaurantUseCase implements IRestaurantServicePort {
 	private final IRestaurantPersistencePort restaurantPersistencePort;
 	private final IUserRoleValidator userRoleValidator;
-
-	public CreateRestaurantUseCase(IRestaurantPersistencePort restaurantPersistencePort,
-			IUserRoleValidator userRoleValidator) {
-		this.restaurantPersistencePort = restaurantPersistencePort;
-		this.userRoleValidator = userRoleValidator;
-	}
+	private final IDomainNotificationPort domainNotificationPort;
 
 	@Override
 	public Restaurant createRestaurant(Restaurant restaurant) {
-		if (restaurantPersistencePort.existsByTaxId(restaurant.getTaxId())) {
-			throw new IllegalArgumentException("A restaurant with this NIT already exists");
+		if (!restaurant.getTaxId().matches(Constants.REGEX_TAX_ID)) {
+			domainNotificationPort.notifyError(Constants.MSG_INVALID_TAX_ID);
 		}
+
+		if (!restaurant.getPhone().matches(Constants.REGEX_CELL_PHONE)) {
+			domainNotificationPort.notifyError(Constants.MSG_INVALID_CELL_PHONE);
+		}
+
 		if (!userRoleValidator.isOwner(restaurant.getCreatedBy())) {
-			throw new IllegalArgumentException("The user is not authorized as an owner");
+			domainNotificationPort.notifyError(Constants.MSG_USER_NOT_AUTORIZED_AS_OWNER);
 		}
 		return restaurantPersistencePort.createRestaurant(restaurant);
 	}
 
 	@Override
-	public java.util.List<Restaurant> getAllRestaurants() {
+	public List<Restaurant> getAllRestaurants() {
 		return restaurantPersistencePort.getAllRestaurants();
 	}
 }

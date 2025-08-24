@@ -1,10 +1,16 @@
 package com.pragma.foodcourt.infrastructure.out.jpa.entity;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "restaurant")
@@ -18,8 +24,8 @@ public class RestaurantEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(name = "tax_id", nullable = false, unique = true)
-    private Long taxId;
+    @Column(name = "tax_id", nullable = false, length = 50)
+    private String taxId;
 
     @Column(nullable = false, length = 200)
     private String address;
@@ -31,7 +37,7 @@ public class RestaurantEntity {
     private String logoUrl;
 
     @Column(name = "created_by", nullable = false)
-    private Long createdBy;
+    private String createdBy;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

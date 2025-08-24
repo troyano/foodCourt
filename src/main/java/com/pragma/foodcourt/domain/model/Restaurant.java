@@ -1,5 +1,7 @@
 package com.pragma.foodcourt.domain.model;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +14,10 @@ import lombok.Setter;
 public class Restaurant {
     private Long id;
     private String name;
-    private Long taxId;
+    private String taxId;
     private String address;
     private String phone;
     private String logoUrl;
-    private Long createdBy;
-    private java.time.LocalDateTime createdAt;
+    private String createdBy;
+    private LocalDateTime createdAt;
 }

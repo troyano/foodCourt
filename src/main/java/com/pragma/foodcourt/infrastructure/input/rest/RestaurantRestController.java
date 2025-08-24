@@ -2,7 +2,6 @@ package com.pragma.foodcourt.infrastructure.input.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +18,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.Valid;
+
 @Tag(name = "Restaurant", description = "Restaurant management API")
 @RestController
 @RequestMapping("/api/v1/restaurants")
@@ -29,15 +30,11 @@ public class RestaurantRestController {
 	@Operation(summary = "Create a new restaurant")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Restaurant created", content = @Content),
 			@ApiResponse(responseCode = "400", description = "Invalid data", content = @Content),
-			@ApiResponse(responseCode = "409", description = "Restaurant already exists", content = @Content) })
+			@ApiResponse(responseCode = "409", description = "Restaurant already exists", content = @Content),
+			@ApiResponse(responseCode = "403", description = "User not authorized as owner", content = @Content)})
 	@PostMapping
-	public ResponseEntity<RestaurantResponseDto> createRestaurant(@RequestBody RestaurantRequestDto requestDto) {
+	public ResponseEntity<RestaurantResponseDto> createRestaurant(@RequestBody @Valid RestaurantRequestDto requestDto) {
 		RestaurantResponseDto responseDto = restaurantHandler.createRestaurant(requestDto);
 		return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
-	}
-
-	@GetMapping("/test")
-	public String test() {
-		return "ok";
 	}
 }
