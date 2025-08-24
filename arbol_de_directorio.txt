@@ -1,0 +1,223 @@
+.
+├── arbol_de_directorio.txt
+├── build
+│   ├── bootJarMainClassName
+│   ├── classes
+│   │   └── java
+│   │       ├── main
+│   │       │   └── com
+│   │       │       └── pragma
+│   │       │           └── plazoleta
+│   │       │               ├── application
+│   │       │               │   ├── dto
+│   │       │               │   │   ├── request
+│   │       │               │   │   │   ├── ObjectRequestDto.class
+│   │       │               │   │   │   └── PropietarioRequestDto.class
+│   │       │               │   │   └── response
+│   │       │               │   │       ├── ObjectResponseDto.class
+│   │       │               │   │       └── UsuarioResponseDto.class
+│   │       │               │   ├── handler
+│   │       │               │   │   ├── impl
+│   │       │               │   │   │   ├── ObjectHandler.class
+│   │       │               │   │   │   └── UsuarioHandler.class
+│   │       │               │   │   ├── IObjectHandler.class
+│   │       │               │   │   └── IUsuarioHandler.class
+│   │       │               │   └── mapper
+│   │       │               │       ├── IObjectRequestMapper.class
+│   │       │               │       ├── IObjectRequestMapperImpl.class
+│   │       │               │       ├── IObjectResponseMapper.class
+│   │       │               │       ├── IObjectResponseMapperImpl.class
+│   │       │               │       ├── IUsuarioRequestMapper.class
+│   │       │               │       ├── IUsuarioRequestMapperImpl.class
+│   │       │               │       ├── IUsuarioResponseMapper.class
+│   │       │               │       └── IUsuarioResponseMapperImpl.class
+│   │       │               ├── domain
+│   │       │               │   ├── api
+│   │       │               │   │   ├── IObjectServicePort.class
+│   │       │               │   │   └── IUsuarioServicePort.class
+│   │       │               │   ├── exception
+│   │       │               │   │   └── DomainException.class
+│   │       │               │   ├── model
+│   │       │               │   │   ├── ObjectModel.class
+│   │       │               │   │   ├── Rol.class
+│   │       │               │   │   └── Usuario.class
+│   │       │               │   ├── spi
+│   │       │               │   │   ├── IObjectPersistencePort.class
+│   │       │               │   │   ├── IRolPersistencePort.class
+│   │       │               │   │   └── IUsuarioPersistencePort.class
+│   │       │               │   └── usecase
+│   │       │               │       ├── ObjectUseCase.class
+│   │       │               │       └── UsuarioUseCase.class
+│   │       │               ├── infrastructure
+│   │       │               │   ├── configuration
+│   │       │               │   │   ├── BeanConfiguration.class
+│   │       │               │   │   └── SecurityConfig.class
+│   │       │               │   ├── documentation
+│   │       │               │   │   └── OpenApiConfiguration.class
+│   │       │               │   ├── exception
+│   │       │               │   │   └── NoDataFoundException.class
+│   │       │               │   ├── exceptionhandler
+│   │       │               │   │   ├── ControllerAdvisor.class
+│   │       │               │   │   └── ExceptionResponse.class
+│   │       │               │   ├── input
+│   │       │               │   │   └── rest
+│   │       │               │   │       ├── ObjectRestController.class
+│   │       │               │   │       └── UsuarioRestController.class
+│   │       │               │   └── out
+│   │       │               │       └── jpa
+│   │       │               │           ├── adapter
+│   │       │               │           │   ├── ObjectJpaAdapter.class
+│   │       │               │           │   ├── RolJpaAdapter.class
+│   │       │               │           │   └── UsuarioJpaAdapter.class
+│   │       │               │           ├── entity
+│   │       │               │           │   ├── ObjectEntity.class
+│   │       │               │           │   ├── RolEntity$RolEntityBuilder.class
+│   │       │               │           │   ├── RolEntity.class
+│   │       │               │           │   ├── UsuarioEntity$UsuarioEntityBuilder.class
+│   │       │               │           │   └── UsuarioEntity.class
+│   │       │               │           ├── mapper
+│   │       │               │           │   ├── IObjectEntityMapper.class
+│   │       │               │           │   ├── IObjectEntityMapperImpl.class
+│   │       │               │           │   ├── IRolEntityMapper.class
+│   │       │               │           │   ├── IRolEntityMapperImpl.class
+│   │       │               │           │   ├── IUsuarioEntityMapper.class
+│   │       │               │           │   └── IUsuarioEntityMapperImpl.class
+│   │       │               │           └── repository
+│   │       │               │               ├── IObjectRepository.class
+│   │       │               │               ├── IRolRepository.class
+│   │       │               │               └── IUsuarioRepository.class
+│   │       │               └── PlazoletaApplication.class
+│   │       └── test
+│   ├── generated
+│   │   └── sources
+│   │       ├── annotationProcessor
+│   │       │   └── java
+│   │       │       ├── main
+│   │       │       │   └── com
+│   │       │       │       └── pragma
+│   │       │       │           └── plazoleta
+│   │       │       │               ├── application
+│   │       │       │               │   └── mapper
+│   │       │       │               │       ├── IObjectRequestMapperImpl.java
+│   │       │       │               │       ├── IObjectResponseMapperImpl.java
+│   │       │       │               │       ├── IUsuarioRequestMapperImpl.java
+│   │       │       │               │       └── IUsuarioResponseMapperImpl.java
+│   │       │       │               └── infrastructure
+│   │       │       │                   └── out
+│   │       │       │                       └── jpa
+│   │       │       │                           └── mapper
+│   │       │       │                               ├── IObjectEntityMapperImpl.java
+│   │       │       │                               ├── IRolEntityMapperImpl.java
+│   │       │       │                               └── IUsuarioEntityMapperImpl.java
+│   │       │       └── test
+│   │       └── headers
+│   │           └── java
+│   │               ├── main
+│   │               └── test
+│   ├── libs
+│   │   ├── plazoleta-0.0.1-SNAPSHOT.jar
+│   │   └── plazoleta-0.0.1-SNAPSHOT-plain.jar
+│   ├── resources
+│   │   └── main
+│   │       ├── application.yml
+│   │       └── banner.txt
+│   └── tmp
+│       ├── bootJar
+│       │   └── MANIFEST.MF
+│       ├── compileJava
+│       │   └── previous-compilation-data.bin
+│       ├── compileTestJava
+│       │   └── previous-compilation-data.bin
+│       └── jar
+│           └── MANIFEST.MF
+├── build.gradle
+├── lombok.config
+├── README.md
+├── settings.gradle
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── pragma
+    │   │           └── plazoleta
+    │   │               ├── application
+    │   │               │   ├── dto
+    │   │               │   │   ├── request
+    │   │               │   │   │   ├── ObjectRequestDto.java
+    │   │               │   │   │   └── PropietarioRequestDto.java
+    │   │               │   │   └── response
+    │   │               │   │       ├── ObjectResponseDto.java
+    │   │               │   │       └── UsuarioResponseDto.java
+    │   │               │   ├── handler
+    │   │               │   │   ├── impl
+    │   │               │   │   │   ├── ObjectHandler.java
+    │   │               │   │   │   └── UsuarioHandler.java
+    │   │               │   │   ├── IObjectHandler.java
+    │   │               │   │   └── IUsuarioHandler.java
+    │   │               │   └── mapper
+    │   │               │       ├── IObjectRequestMapper.java
+    │   │               │       ├── IObjectResponseMapper.java
+    │   │               │       ├── IUsuarioRequestMapper.java
+    │   │               │       └── IUsuarioResponseMapper.java
+    │   │               ├── domain
+    │   │               │   ├── api
+    │   │               │   │   ├── IObjectServicePort.java
+    │   │               │   │   └── IUsuarioServicePort.java
+    │   │               │   ├── exception
+    │   │               │   │   └── DomainException.java
+    │   │               │   ├── model
+    │   │               │   │   ├── ObjectModel.java
+    │   │               │   │   ├── Rol.java
+    │   │               │   │   └── Usuario.java
+    │   │               │   ├── spi
+    │   │               │   │   ├── IObjectPersistencePort.java
+    │   │               │   │   ├── IRolPersistencePort.java
+    │   │               │   │   └── IUsuarioPersistencePort.java
+    │   │               │   └── usecase
+    │   │               │       ├── ObjectUseCase.java
+    │   │               │       └── UsuarioUseCase.java
+    │   │               ├── infrastructure
+    │   │               │   ├── configuration
+    │   │               │   │   ├── BeanConfiguration.java
+    │   │               │   │   └── SecurityConfig.java
+    │   │               │   ├── documentation
+    │   │               │   │   └── OpenApiConfiguration.java
+    │   │               │   ├── exception
+    │   │               │   │   └── NoDataFoundException.java
+    │   │               │   ├── exceptionhandler
+    │   │               │   │   ├── ControllerAdvisor.java
+    │   │               │   │   └── ExceptionResponse.java
+    │   │               │   ├── input
+    │   │               │   │   └── rest
+    │   │               │   │       ├── ObjectRestController.java
+    │   │               │   │       └── UsuarioRestController.java
+    │   │               │   └── out
+    │   │               │       └── jpa
+    │   │               │           ├── adapter
+    │   │               │           │   ├── ObjectJpaAdapter.java
+    │   │               │           │   ├── RolJpaAdapter.java
+    │   │               │           │   └── UsuarioJpaAdapter.java
+    │   │               │           ├── entity
+    │   │               │           │   ├── ObjectEntity.java
+    │   │               │           │   ├── RolEntity.java
+    │   │               │           │   └── UsuarioEntity.java
+    │   │               │           ├── mapper
+    │   │               │           │   ├── IObjectEntityMapper.java
+    │   │               │           │   ├── IRolEntityMapper.java
+    │   │               │           │   └── IUsuarioEntityMapper.java
+    │   │               │           └── repository
+    │   │               │               ├── IObjectRepository.java
+    │   │               │               ├── IRolRepository.java
+    │   │               │               └── IUsuarioRepository.java
+    │   │               └── PlazoletaApplication.java
+    │   └── resources
+    │       ├── application.yml
+    │       └── banner.txt
+    └── test
+        └── java
+            └── com
+                └── pragma
+                    └── plazoleta
+                        └── PlazoletaApplicationTests.java
+
+99 directories, 121 files
