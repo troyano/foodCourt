@@ -26,7 +26,7 @@ public class CreateDishUseCase implements IDishServicePort {
     @Override
     public Dish createDish(Dish dish) {
 		// Only owner can create
-		if (!userRoleValidator.isOwner(dish.getCreatedBy())) {
+		if (!userRoleValidator.isRole(dish.getCreatedBy(), Constants.ROLE_OWNER)) {
 			domainNotificationPort.notifyError(Constants.MSG_USER_NOT_AUTORIZED_AS_OWNER);
 		}
 		// Find restaurant by taxId
