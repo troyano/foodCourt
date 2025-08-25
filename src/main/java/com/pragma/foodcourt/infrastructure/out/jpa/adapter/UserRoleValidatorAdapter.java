@@ -13,10 +13,10 @@ public class UserRoleValidatorAdapter implements IUserRoleValidator {
     private final String userServiceUrl;
 
     @Override
-    public boolean isOwner(String userName) {
+    public boolean isRole(String userName, String role) {
         try {
             String url = UriComponentsBuilder.fromHttpUrl(userServiceUrl)
-                .pathSegment(userName, "is-owner")
+                .pathSegment(userName, "is-role", role)
                 .toUriString();
             Boolean response = restTemplate.getForObject(url, Boolean.class);
             return Boolean.TRUE.equals(response);

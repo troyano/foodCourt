@@ -44,7 +44,7 @@ class CreateRestaurantUseCaseTest {
 
 	@Test
 	void createRestaurant_validData_success() {
-		when(userRoleValidator.isOwner(anyString())).thenReturn(true);
+		when(userRoleValidator.isRole(anyString(), anyString())).thenReturn(true);
 		when(restaurantPersistencePort.createRestaurant(any(Restaurant.class))).thenReturn(validRestaurant);
 		Restaurant result = createRestaurantUseCase.createRestaurant(validRestaurant);
 		assertEquals(validRestaurant, result);
@@ -54,7 +54,7 @@ class CreateRestaurantUseCaseTest {
 	@Test
 	void createRestaurant_invalidTaxId_triggersNotification() {
 		validRestaurant.setTaxId("invalid");
-		when(userRoleValidator.isOwner(anyString())).thenReturn(true);
+		when(userRoleValidator.isRole(anyString(), anyString())).thenReturn(true);
 		when(restaurantPersistencePort.createRestaurant(any(Restaurant.class))).thenReturn(validRestaurant);
 		createRestaurantUseCase.createRestaurant(validRestaurant);
 		verify(domainNotificationPort).notifyError(Constants.MSG_INVALID_TAX_ID);
@@ -63,7 +63,7 @@ class CreateRestaurantUseCaseTest {
 	@Test
 	void createRestaurant_invalidPhone_triggersNotification() {
 		validRestaurant.setPhone("123-456");
-		when(userRoleValidator.isOwner(anyString())).thenReturn(true);
+		when(userRoleValidator.isRole(anyString(), anyString())).thenReturn(true);
 		when(restaurantPersistencePort.createRestaurant(any(Restaurant.class))).thenReturn(validRestaurant);
 		createRestaurantUseCase.createRestaurant(validRestaurant);
 		verify(domainNotificationPort).notifyError(Constants.MSG_INVALID_CELL_PHONE);
@@ -72,7 +72,7 @@ class CreateRestaurantUseCaseTest {
 
 	@Test
 	void createRestaurant_userNotOwner_triggersNotification() {
-		when(userRoleValidator.isOwner(anyString())).thenReturn(false);
+		when(userRoleValidator.isRole(anyString(), anyString())).thenReturn(false);
 		when(restaurantPersistencePort.createRestaurant(any(Restaurant.class))).thenReturn(validRestaurant);
 		createRestaurantUseCase.createRestaurant(validRestaurant);
 		verify(domainNotificationPort).notifyError(Constants.MSG_USER_NOT_AUTORIZED_AS_OWNER);

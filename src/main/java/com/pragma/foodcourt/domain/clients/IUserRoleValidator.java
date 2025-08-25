@@ -1,5 +1,5 @@
 package com.pragma.foodcourt.domain.clients;
 
 public interface IUserRoleValidator {
-	boolean isOwner(String userName);
+	boolean isRole(String userName, String role);
 }

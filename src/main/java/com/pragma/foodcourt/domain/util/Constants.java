@@ -2,6 +2,8 @@ package com.pragma.foodcourt.domain.util;
 
 public class Constants {
 
+	public static final String ROLE_ADM = "ADM";
+	public static final String ROLE_OWNER = "OWN";
 	// Messages
 	public static final String MSG_INVALID_TAX_ID = "The document must be numeric";
 	public static final String MSG_INVALID_CELL_PHONE = "Invalid cell phone";
