@@ -27,7 +27,7 @@ public class CreateRestaurantUseCase implements IRestaurantServicePort {
 			domainNotificationPort.notifyError(Constants.MSG_INVALID_CELL_PHONE);
 		}
 
-		if (!userRoleValidator.isOwner(restaurant.getCreatedBy())) {
+		if (!userRoleValidator.isRole(restaurant.getCreatedBy(), Constants.ROLE_OWNER)) {
 			domainNotificationPort.notifyError(Constants.MSG_USER_NOT_AUTORIZED_AS_OWNER);
 		}
 		return restaurantPersistencePort.createRestaurant(restaurant);
