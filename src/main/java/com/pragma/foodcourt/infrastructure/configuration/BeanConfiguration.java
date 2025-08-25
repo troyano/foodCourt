@@ -5,15 +5,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import com.pragma.foodcourt.domain.api.IDishServicePort;
 import com.pragma.foodcourt.domain.api.IRestaurantServicePort;
 import com.pragma.foodcourt.domain.clients.IUserRoleValidator;
+import com.pragma.foodcourt.domain.spi.IDishPersistencePort;
 import com.pragma.foodcourt.domain.spi.IDomainNotificationPort;
 import com.pragma.foodcourt.domain.spi.IRestaurantPersistencePort;
+import com.pragma.foodcourt.domain.usecase.CreateDishUseCase;
 import com.pragma.foodcourt.domain.usecase.CreateRestaurantUseCase;
 import com.pragma.foodcourt.infrastructure.exception.DomainNotificationAdapter;
+import com.pragma.foodcourt.infrastructure.out.jpa.adapter.DishJpaAdapter;
 import com.pragma.foodcourt.infrastructure.out.jpa.adapter.RestaurantJpaAdapter;
 import com.pragma.foodcourt.infrastructure.out.jpa.adapter.UserRoleValidatorAdapter;
+import com.pragma.foodcourt.infrastructure.out.jpa.mapper.IDishEntityMapper;
 import com.pragma.foodcourt.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
+import com.pragma.foodcourt.infrastructure.out.jpa.repository.ICategoryRepository;
+import com.pragma.foodcourt.infrastructure.out.jpa.repository.IDishRepository;
 import com.pragma.foodcourt.infrastructure.out.jpa.repository.IRestaurantRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +31,9 @@ public class BeanConfiguration {
 
 	private final IRestaurantRepository restaurantRepository;
 	private final IRestaurantEntityMapper restaurantEntityMapper;
+	private final IDishRepository dishRepository;
+	private final IDishEntityMapper dishEntityMapper;
+	private final ICategoryRepository categoryRepository;
 
 	private @Value("${users.service-url}") String userServiceUrl;
 
@@ -39,13 +49,23 @@ public class BeanConfiguration {
 	}
 
 	@Bean
+	public IDishPersistencePort dishPersistencePort() {
+		return new DishJpaAdapter(dishRepository, dishEntityMapper);
+	}
+
+	@Bean
+	public IDishServicePort dishServicePort() {
+		return new CreateDishUseCase(dishPersistencePort(), userRoleValidator(restTemplate(), userServiceUrl),
+				domainNotificationPort(), restaurantRepository, categoryRepository);
+	}
+
+	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
 
 	@Bean
-	public IUserRoleValidator userRoleValidator(RestTemplate restTemplate,
-			@Value("${users.service-url}") String userServiceUrl) {
+	public IUserRoleValidator userRoleValidator(RestTemplate restTemplate, String userServiceUrl) {
 		return new UserRoleValidatorAdapter(restTemplate, userServiceUrl);
 	}
 

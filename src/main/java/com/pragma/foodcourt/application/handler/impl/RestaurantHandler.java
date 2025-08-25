@@ -1,7 +1,5 @@
 package com.pragma.foodcourt.application.handler.impl;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +24,5 @@ public class RestaurantHandler implements IRestaurantHandler {
 	public RestaurantResponseDto createRestaurant(RestaurantRequestDto restaurantRequestDto) {
 		return restaurantResponseMapper.toResponse(
 				restaurantServicePort.createRestaurant(restaurantRequestMapper.toRestaurant(restaurantRequestDto)));
-	}
-
-	@Override
-	public List<RestaurantResponseDto> getAllRestaurants() {
-		return restaurantResponseMapper.toResponseList(restaurantServicePort.getAllRestaurants());
 	}
 }

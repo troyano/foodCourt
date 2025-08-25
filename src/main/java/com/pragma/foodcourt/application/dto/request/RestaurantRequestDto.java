@@ -28,7 +28,7 @@ public class RestaurantRequestDto {
 	private String address;
 	@NotBlank
 	@Size(max = 13, message = "The cell phone cannot exceed 13 characters")
-	@Pattern(regexp = "^\\+?[0-9]*$", message = "The cell phone can only contain numbers and optionally the + symbol")
+	@Pattern(regexp = "^\\+?\\d*$", message = "The cell phone can only contain numbers and optionally the + symbol")
 	private String phone;
 	@NotBlank
 	@Size(max = 255, message = "The logoUrl cannot exceed 255 characters")

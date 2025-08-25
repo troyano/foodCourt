@@ -5,5 +5,4 @@ import com.pragma.foodcourt.application.dto.response.RestaurantResponseDto;
 
 public interface IRestaurantHandler {
 	RestaurantResponseDto createRestaurant(RestaurantRequestDto restaurantRequestDto);
-    java.util.List<RestaurantResponseDto> getAllRestaurants();
 }
