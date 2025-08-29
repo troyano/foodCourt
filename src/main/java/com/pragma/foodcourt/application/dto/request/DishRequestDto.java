@@ -1,11 +1,13 @@
 package com.pragma.foodcourt.application.dto.request;
 
-import java.math.BigDecimal;
-
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+
+import com.pragma.foodcourt.domain.util.Constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,31 +19,33 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DishRequestDto {
-	@NotBlank(message = "The name is required")
-	@Size(max = 200, message = "The name cannot exceed 200 characters")
+	@NotBlank(message = Constants.MSG_NAME_REQUIRED)
+	@Size(max = Constants.NUMBER_200, message = Constants.MSG_NAME_MAX_LENGTH)
 	private String name;
 
-	@NotNull(message = "The price is required")
-	@Min(value = 1, message = "The price must be a positive integer greater than 0")
-	private BigDecimal price;
+	@NotNull(message = Constants.MSG_PRICE_REQUIRED)
+	@Min(value = 1, message = Constants.MSG_PRICE_MIN)
+	@Positive(message = Constants.PRICE_POSITIVE)
+	@Digits(integer = 12, fraction = 0, message = Constants.PRICE_DIGITS)
+	private java.math.BigDecimal price;
 
-	@NotBlank(message = "The description is required")
-	@Size(max = 255, message = "The description cannot exceed 255 characters")
+	@NotBlank(message = Constants.MSG_DESCRIPTION_REQUIRED)
+	@Size(max = Constants.NUMBER_255, message = Constants.MSG_DESCRIPTION_MAX_LENGTH)
 	private String description;
 
-	@NotBlank(message = "The imageUrl is required")
-	@Size(max = 255, message = "The imageUrl cannot exceed 255 characters")
+	@NotBlank(message = Constants.MSG_IMAGE_URL_REQUIRED)
+	@Size(max = Constants.NUMBER_255, message = Constants.MSG_IMAGE_URL_MAX_LENGTH)
 	private String imageUrl;
 
-	@NotBlank(message = "The restaurantTaxId is required")
-	@Size(max = 50, message = "The restaurantTaxId cannot exceed 50 characters")
+	@NotBlank(message = Constants.MSG_RESTAURANT_TAX_ID_REQUIRED)
+	@Size(max = Constants.NUMBER_50, message = Constants.MSG_RESTAURANT_TAX_ID_MAX_LENGTH)
 	private String restaurantTaxId;
 
-	@NotBlank(message = "The categoryCode is required")
-	@Size(max = 5, message = "The categoryCode cannot exceed 5 characters")
+	@NotBlank(message = Constants.MSG_CATEGORY_CODE_REQUIRED)
+	@Size(max = Constants.NUMBER_5, message = Constants.MSG_CATEGORY_CODE_MAX_LENGTH_DISH)
 	private String categoryCode;
 
-	@NotBlank
-	@Size(max = 150, message = "The createdBy cannot exceed 150 characters")
+	@NotBlank(message = Constants.MSG_CREATED_BY_REQUIRED)
+	@Size(max = Constants.NUMBER_150, message = Constants.MSG_CREATED_BY_MAX_LENGTH_DISH)
 	private String createdBy;
 }

@@ -1,5 +1,7 @@
 package com.pragma.foodcourt.infrastructure.configuration;
 
+import com.pragma.foodcourt.domain.api.IUpdateDishServicePort;
+import com.pragma.foodcourt.domain.usecase.UpdateDishUseCase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,11 +11,9 @@ import com.pragma.foodcourt.domain.api.IDishServicePort;
 import com.pragma.foodcourt.domain.api.IRestaurantServicePort;
 import com.pragma.foodcourt.domain.clients.IUserRoleValidator;
 import com.pragma.foodcourt.domain.spi.IDishPersistencePort;
-import com.pragma.foodcourt.domain.spi.IDomainNotificationPort;
 import com.pragma.foodcourt.domain.spi.IRestaurantPersistencePort;
 import com.pragma.foodcourt.domain.usecase.CreateDishUseCase;
 import com.pragma.foodcourt.domain.usecase.CreateRestaurantUseCase;
-import com.pragma.foodcourt.infrastructure.exception.DomainNotificationAdapter;
 import com.pragma.foodcourt.infrastructure.out.jpa.adapter.DishJpaAdapter;
 import com.pragma.foodcourt.infrastructure.out.jpa.adapter.RestaurantJpaAdapter;
 import com.pragma.foodcourt.infrastructure.out.jpa.adapter.UserRoleValidatorAdapter;
@@ -45,7 +45,7 @@ public class BeanConfiguration {
 	@Bean
 	public IRestaurantServicePort restaurantServicePort() {
 		return new CreateRestaurantUseCase(restaurantPersistencePort(),
-				userRoleValidator(restTemplate(), userServiceUrl), domainNotificationPort());
+				userRoleValidator(restTemplate(), userServiceUrl));
 	}
 
 	@Bean
@@ -55,10 +55,13 @@ public class BeanConfiguration {
 
 	@Bean
 	public IDishServicePort dishServicePort() {
-		return new CreateDishUseCase(dishPersistencePort(), userRoleValidator(restTemplate(), userServiceUrl),
-				domainNotificationPort(), restaurantRepository, categoryRepository);
+		return new CreateDishUseCase(dishPersistencePort(), userRoleValidator(restTemplate(), userServiceUrl), restaurantRepository, categoryRepository);
 	}
 
+	@Bean
+	public IUpdateDishServicePort updateDishServicePort() {
+		return new UpdateDishUseCase(dishPersistencePort(), userRoleValidator(restTemplate(), userServiceUrl), dishRepository);
+	}
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
@@ -67,10 +70,5 @@ public class BeanConfiguration {
 	@Bean
 	public IUserRoleValidator userRoleValidator(RestTemplate restTemplate, String userServiceUrl) {
 		return new UserRoleValidatorAdapter(restTemplate, userServiceUrl);
-	}
-
-	@Bean
-	public IDomainNotificationPort domainNotificationPort() {
-		return new DomainNotificationAdapter();
 	}
 }

@@ -3,7 +3,6 @@ package com.pragma.foodcourt.domain.api;
 import com.pragma.foodcourt.domain.model.Dish;
 import com.pragma.foodcourt.domain.model.DishUpdate;
 
-public interface IDishServicePort {
-	Dish createDish(Dish dish);
-
+public interface IUpdateDishServicePort {
+	void updateDishPriceAndDescription(DishUpdate dish);
 }

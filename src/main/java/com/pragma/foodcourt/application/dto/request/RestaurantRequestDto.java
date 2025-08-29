@@ -4,6 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.pragma.foodcourt.domain.util.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,24 +17,24 @@ import lombok.Setter;
 public class RestaurantRequestDto {
 
 	@NotBlank
-	@Size(max = 100, message = "The name cannot exceed 100 characters")
-	@Pattern(regexp = "^(?=.*[a-zA-Z])(?!\\d+$).+$", message = "The name must contain at least one letter and cannot be only numbers")
+	@Size(max = Constants.NUMBER_100, message = Constants.MSG_RESTAURANT_NAME_MAX_LENGTH)
+	@Pattern(regexp = Constants.REGEX_RESTAURANT_NAME, message = Constants.MSG_RESTAURANT_NAME_PATTERN)
 	private String name;
 	@NotBlank
-	@Size(max = 50, message = "The taxId cannot exceed 50 characters")
-	@Pattern(regexp = "\\d+", message = "The document must be numeric")
+	@Size(max = Constants.NUMBER_50, message = Constants.MSG_RESTAURANT_TAX_ID_MAX_LENGTH)
+	@Pattern(regexp = Constants.REGEX_TAX_ID, message = Constants.MSG_INVALID_TAX_ID)
 	private String taxId;
 	@NotBlank
-	@Size(max = 200, message = "The address cannot exceed 200 characters")
+	@Size(max = Constants.NUMBER_200, message = Constants.MSG_RESTAURANT_ADDRESS_MAX_LENGTH)
 	private String address;
 	@NotBlank
-	@Size(max = 13, message = "The cell phone cannot exceed 13 characters")
-	@Pattern(regexp = "^\\+?\\d*$", message = "The cell phone can only contain numbers and optionally the + symbol")
+	@Size(max = Constants.NUMBER_13, message = Constants.MSG_CELL_PHONE_MAX_LENGTH)
+	@Pattern(regexp = Constants.REGEX_PHONE, message = Constants.MSG_CELL_PHONE_REGEX)
 	private String phone;
 	@NotBlank
-	@Size(max = 255, message = "The logoUrl cannot exceed 255 characters")
+	@Size(max = Constants.NUMBER_255, message = Constants.MSG_LOGO_URL_MAX_LENGTH)
 	private String logoUrl;
 	@NotBlank
-	@Size(max = 255, message = "The createdBy cannot exceed 255 characters")
+	@Size(max = Constants.NUMBER_255, message = Constants.MSG_CREATED_BY_MAX_LENGTH_RESTAURANT)
 	private String createdBy;
 }

@@ -1,9 +1,9 @@
 package com.pragma.foodcourt.domain.usecase;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,8 +16,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.pragma.foodcourt.domain.clients.IUserRoleValidator;
+import com.pragma.foodcourt.domain.exception.ValidationException;
 import com.pragma.foodcourt.domain.model.Restaurant;
-import com.pragma.foodcourt.domain.spi.IDomainNotificationPort;
 import com.pragma.foodcourt.domain.spi.IRestaurantPersistencePort;
 import com.pragma.foodcourt.domain.util.Constants;
 
@@ -26,8 +26,6 @@ class CreateRestaurantUseCaseTest {
 	private IRestaurantPersistencePort restaurantPersistencePort;
 	@Mock
 	private IUserRoleValidator userRoleValidator;
-	@Mock
-	private IDomainNotificationPort domainNotificationPort;
 	@InjectMocks
 	private CreateRestaurantUseCase createRestaurantUseCase;
 
@@ -48,35 +46,36 @@ class CreateRestaurantUseCaseTest {
 		when(restaurantPersistencePort.createRestaurant(any(Restaurant.class))).thenReturn(validRestaurant);
 		Restaurant result = createRestaurantUseCase.createRestaurant(validRestaurant);
 		assertEquals(validRestaurant, result);
-		verify(domainNotificationPort, never()).notifyError(anyString());
+		verify(restaurantPersistencePort).createRestaurant(validRestaurant);
 	}
 
 	@Test
-	void createRestaurant_invalidTaxId_triggersNotification() {
+	void createRestaurant_invalidTaxId_throwsValidationException() {
 		validRestaurant.setTaxId("invalid");
 		when(userRoleValidator.isRole(anyString(), anyString())).thenReturn(true);
-		when(restaurantPersistencePort.createRestaurant(any(Restaurant.class))).thenReturn(validRestaurant);
-		createRestaurantUseCase.createRestaurant(validRestaurant);
-		verify(domainNotificationPort).notifyError(Constants.MSG_INVALID_TAX_ID);
+		ValidationException exception = assertThrows(ValidationException.class, () -> {
+			createRestaurantUseCase.createRestaurant(validRestaurant);
+		});
+		assertEquals(Constants.MSG_INVALID_TAX_ID, exception.getMessage());
 	}
 
 	@Test
-	void createRestaurant_invalidPhone_triggersNotification() {
+	void createRestaurant_invalidPhone_throwsValidationException() {
 		validRestaurant.setPhone("123-456");
 		when(userRoleValidator.isRole(anyString(), anyString())).thenReturn(true);
-		when(restaurantPersistencePort.createRestaurant(any(Restaurant.class))).thenReturn(validRestaurant);
-		createRestaurantUseCase.createRestaurant(validRestaurant);
-		verify(domainNotificationPort).notifyError(Constants.MSG_INVALID_CELL_PHONE);
-		verify(restaurantPersistencePort).createRestaurant(validRestaurant);
+		ValidationException exception = assertThrows(ValidationException.class, () -> {
+			createRestaurantUseCase.createRestaurant(validRestaurant);
+		});
+		assertEquals(Constants.MSG_CELL_PHONE_REGEX, exception.getMessage());
 	}
 
 	@Test
-	void createRestaurant_userNotOwner_triggersNotification() {
+	void createRestaurant_userNotOwner_throwsValidationException() {
 		when(userRoleValidator.isRole(anyString(), anyString())).thenReturn(false);
-		when(restaurantPersistencePort.createRestaurant(any(Restaurant.class))).thenReturn(validRestaurant);
-		createRestaurantUseCase.createRestaurant(validRestaurant);
-		verify(domainNotificationPort).notifyError(Constants.MSG_USER_NOT_AUTORIZED_AS_OWNER);
-		verify(restaurantPersistencePort).createRestaurant(validRestaurant);
+		ValidationException exception = assertThrows(ValidationException.class, () -> {
+			createRestaurantUseCase.createRestaurant(validRestaurant);
+		});
+		assertEquals(Constants.MSG_USER_NOT_AUTHORIZED_AS_ADM, exception.getMessage());
 	}
 
 	@Test
