@@ -15,4 +15,4 @@ appdescription: "Pragma FoodCourt"
 appversion: "1.0.0"
 
 users:
-  service-url: "http://localhost:9001/api/v1/users"
+  service-url: "http://localhost:9001/api/v1"

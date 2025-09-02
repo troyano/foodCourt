@@ -2,6 +2,7 @@ package com.pragma.foodcourt.infrastructure.input.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import javax.validation.Valid;
+import static com.pragma.foodcourt.domain.util.Constants.ROLE_ADM;
 
 @Tag(name = "Restaurant", description = "Restaurant management API")
 @RestController
@@ -33,6 +35,7 @@ public class RestaurantRestController {
 			@ApiResponse(responseCode = "409", description = "Restaurant already exists", content = @Content),
 			@ApiResponse(responseCode = "403", description = "User not authorized as owner", content = @Content)})
 	@PostMapping
+	@PreAuthorize("hasRole('" + ROLE_ADM + "')")
 	public ResponseEntity<RestaurantResponseDto> createRestaurant(@RequestBody @Valid RestaurantRequestDto requestDto) {
 		RestaurantResponseDto responseDto = restaurantHandler.createRestaurant(requestDto);
 		return new ResponseEntity<>(responseDto, HttpStatus.CREATED);

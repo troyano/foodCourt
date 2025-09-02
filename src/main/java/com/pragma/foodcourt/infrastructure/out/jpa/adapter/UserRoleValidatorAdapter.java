@@ -16,8 +16,10 @@ public class UserRoleValidatorAdapter implements IUserRoleValidator {
     public boolean isRole(String userName, String role) {
         try {
             String url = UriComponentsBuilder.fromHttpUrl(userServiceUrl)
+                    .pathSegment("users")
                 .pathSegment(userName, "is-role", role)
                 .toUriString();
+            System.out.println( "-----> URL: " + url);
             Boolean response = restTemplate.getForObject(url, Boolean.class);
             return Boolean.TRUE.equals(response);
         } catch (Exception e) {
