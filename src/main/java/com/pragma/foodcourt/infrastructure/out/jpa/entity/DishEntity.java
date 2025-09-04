@@ -11,6 +11,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DishEntity {
+    @PrePersist
+    public void prePersist() {
+        if (active == null) {
+            active = true;
+        }
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,9 +33,6 @@ public class DishEntity {
     @Column(name = "image_url", length = 255)
     private String imageUrl;
 
-    @Column(name = "is_active")
-    private Boolean isActive = true;
-
     @Column(name = "created_by", nullable = false, length = 150)
     private String createdBy;
 
@@ -43,4 +46,7 @@ public class DishEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id", insertable = true, updatable = false)
     private CategoryEntity category;
+
+    @Column(name = "is_active")
+    public Boolean active;
 }

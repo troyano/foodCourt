@@ -10,11 +10,11 @@ import java.util.Optional;
 import com.pragma.foodcourt.domain.clients.IUserRoleValidator;
 import com.pragma.foodcourt.domain.exception.ResourceNotFoundException;
 import com.pragma.foodcourt.domain.exception.ValidationException;
+import com.pragma.foodcourt.domain.model.Dish;
 import com.pragma.foodcourt.domain.model.DishUpdate;
 import com.pragma.foodcourt.domain.spi.IDishPersistencePort;
 import com.pragma.foodcourt.domain.util.Constants;
 import com.pragma.foodcourt.infrastructure.out.jpa.entity.DishEntity;
-import com.pragma.foodcourt.infrastructure.out.jpa.repository.IDishRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -27,13 +27,11 @@ class UpdateDishUseCaseTest {
     private IDishPersistencePort dishPersistencePort;
     @Mock
     private IUserRoleValidator userRoleValidator;
-    @Mock
-    private IDishRepository dishRepository;
     @InjectMocks
     private UpdateDishUseCase updateDishUseCase;
 
     private DishUpdate validDishUpdate;
-    private DishEntity existingDish;
+    private Dish existingDish;
 
     @BeforeEach
     void setUp() {
@@ -44,7 +42,7 @@ class UpdateDishUseCaseTest {
         validDishUpdate.setPrice(new BigDecimal("15"));
         validDishUpdate.setDescription("Updated description");
 
-        existingDish = new DishEntity();
+        existingDish = new Dish();
         existingDish.setId(1L);
         existingDish.setPrice(new BigDecimal("10"));
         existingDish.setDescription("Old description");
@@ -53,7 +51,7 @@ class UpdateDishUseCaseTest {
     @Test
     void updateDishPriceAndDescription_validData_success() {
         when(userRoleValidator.isRole(anyString(), anyString())).thenReturn(true);
-        when(dishRepository.findById(anyLong())).thenReturn(Optional.of(existingDish));
+        when(dishPersistencePort.findById(anyLong())).thenReturn(Optional.of(existingDish));
 
         updateDishUseCase.updateDishPriceAndDescription(validDishUpdate);
 
@@ -74,7 +72,7 @@ class UpdateDishUseCaseTest {
     @Test
     void updateDishPriceAndDescription_dishNotFound_throwsResourceNotFoundException() {
         when(userRoleValidator.isRole(anyString(), anyString())).thenReturn(true);
-        when(dishRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(dishPersistencePort.findById(anyLong())).thenReturn(Optional.empty());
 
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> updateDishUseCase.updateDishPriceAndDescription(validDishUpdate));
 

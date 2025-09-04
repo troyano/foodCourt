@@ -1,7 +1,10 @@
 package com.pragma.foodcourt.infrastructure.configuration;
 
+import com.pragma.foodcourt.infrastructure.exception.CustomSecurityErrorHandler;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -12,15 +15,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration
+@AllArgsConstructor
 public class SecurityConfig {
 
 	private final JwtAuthorizationFilter jwtAuthorizationFilter;
-	public SecurityConfig(JwtAuthorizationFilter jwtAuthorizationFilter) {
-		this.jwtAuthorizationFilter = jwtAuthorizationFilter;
-	}
+	private final CustomSecurityErrorHandler customSecurityErrorHandler;
 	private static final String[] PUBLIC_ENDPOINTS = {
+			"/api/v1/auth/login",
+			"/api/v1/auth/jwks.json",
 			"/swagger-ui/**",
-			"/v3/api-docs/**"
+			"/v3/api-docs/**",
+			"/api/v1/users/*/is-role/*"
 	};
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -31,17 +36,35 @@ public class SecurityConfig {
 						.antMatchers(PUBLIC_ENDPOINTS).permitAll()
 						.anyRequest().authenticated()
 				)
+				.exceptionHandling(ex -> ex
+						.authenticationEntryPoint(customSecurityErrorHandler) // 🔹 401
+						.accessDeniedHandler(customSecurityErrorHandler)      // 🔹 403
+				)
 				.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+				.headers(headers -> headers
+						.frameOptions().deny()
+						.xssProtection(xss -> xss.block(true))
+						.contentSecurityPolicy("default-src 'self'")
+				)
+				.httpBasic(AbstractHttpConfigurer::disable)
+				.formLogin(AbstractHttpConfigurer::disable)
 				.build();
 	}
 
 	@Bean
-	public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+	public static UrlBasedCorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		//config.setAllowedOrigins(List.of("https://trusted-domain.com")); // Replace with your trusted domains
-		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+		config.setAllowedMethods(List.of(
+				HttpMethod.GET.name(),
+				HttpMethod.POST.name(),
+				HttpMethod.PUT.name(),
+				HttpMethod.DELETE.name(),
+				HttpMethod.PATCH.name(),
+				HttpMethod.OPTIONS.name()
+		));
 		config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 		config.setAllowCredentials(true);
+		config.addAllowedOriginPattern("*"); // 🔹 Mejor que setAllowedOrigins para soportar wildcards
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);

@@ -3,6 +3,8 @@ package com.pragma.foodcourt.domain.util;
 public class Constants {
 	public static final String ROLE_ADM = "ADM";
 	public static final String ROLE_OWNER = "OWN";
+
+	public static final String ROLE_CLIENT = "CLI";
 	// Messages
 
 	public static final String MSG_IDENTIFIER_IS_REQUIRED = "identifier is required";
@@ -40,6 +42,9 @@ public class Constants {
 	public static final String MSG_USER_NOT_AUTHORIZED_AS_ADM = "The user is not authorized as an administrator";
 	public static final String MSG_RESTAURANT_NOT_FOUNT = "Restaurant not found";
 	public static final String MSG_DISH_NOT_FOUND = "Dish not found";
+	public static final String RESTAURANT_NOT_FOUND_MESSAGE = "Restaurant not found";
+	public static final String NOT_RESTAURANT_OWNER_MESSAGE = "is not the owner of the restaurant";
+
 	// Regular Expressions
 	public static final String REGEX_TAX_ID = "\\d+";
 	public static final String REGEX_CELL_PHONE = "^[+]?[0-9]{1,13}$";

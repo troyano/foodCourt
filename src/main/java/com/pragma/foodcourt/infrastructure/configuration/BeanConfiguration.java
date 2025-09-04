@@ -1,6 +1,7 @@
 package com.pragma.foodcourt.infrastructure.configuration;
 
 import com.pragma.foodcourt.domain.api.IUpdateDishServicePort;
+import com.pragma.foodcourt.domain.spi.IUserContextProviderPort;
 import com.pragma.foodcourt.domain.usecase.UpdateDishUseCase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +35,7 @@ public class BeanConfiguration {
 	private final IDishRepository dishRepository;
 	private final IDishEntityMapper dishEntityMapper;
 	private final ICategoryRepository categoryRepository;
+	private final IUserContextProviderPort userContextProviderPort;
 
 	private @Value("${users.service-url}") String userServiceUrl;
 
@@ -60,7 +62,7 @@ public class BeanConfiguration {
 
 	@Bean
 	public IUpdateDishServicePort updateDishServicePort() {
-		return new UpdateDishUseCase(dishPersistencePort(), userRoleValidator(restTemplate(), userServiceUrl), dishRepository);
+		return new UpdateDishUseCase(dishPersistencePort(), userRoleValidator(restTemplate(), userServiceUrl), userContextProviderPort, restaurantPersistencePort());
 	}
 	@Bean
 	public RestTemplate restTemplate() {

@@ -18,9 +18,11 @@ import java.util.Collections;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtValidator jwtValidator;
     private static final String MSG_NOT_AUTHORIZED = "Authorization header is missing or invalid";
+
     public JwtAuthorizationFilter(JwtValidator jwtValidator) {
         this.jwtValidator = jwtValidator;
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -31,21 +33,18 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         } else {
             String token = authorizationHeader.substring(7);
+            try {
+                String email = jwtValidator.extractClaim(token, "email");
+                String role = jwtValidator.extractClaim(token, "roles");
 
-            if (jwtValidator.validateToken(token)) {
-                try {
-                    String email = jwtValidator.extractClaim(token, "email");
-                    String role = jwtValidator.extractClaim(token, "roles");
-
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(email, null,
-                                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                } catch (ParseException e) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Unauthorized
-                    response.getWriter().write(MSG_NOT_AUTHORIZED);
-                    return;
-                }
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(email, null,
+                                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (ParseException e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Unauthorized
+                response.getWriter().write(MSG_NOT_AUTHORIZED);
+                return;
             }
         }
         filterChain.doFilter(request, response);

@@ -22,4 +22,7 @@ public class Dish {
     private String categoryCode;
     private String createdBy;
     private LocalDateTime createdAt;
+    private Long restaurantId;
+    private Long categoryId;
+    private boolean active;
 }

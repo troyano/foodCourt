@@ -1,5 +1,6 @@
 package com.pragma.foodcourt.application.handler.impl;
 
+import com.pragma.foodcourt.application.dto.request.DishEnableDisableRequestDto;
 import com.pragma.foodcourt.domain.api.IUpdateDishServicePort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,5 +29,10 @@ public class DishHandler implements IDishHandler {
 	@Override
 	public void updateDishPriceAndDescription(DishUpdateRequestDto requestDto) {
 		updateDishServicePort.updateDishPriceAndDescription(dishRequestMapper.toDish(requestDto));
+	}
+
+	@Override
+	public void enableOrDisableDish(DishEnableDisableRequestDto requestDto) {
+		updateDishServicePort.enableOrDisableDish(requestDto.getId(), requestDto.isActive());
 	}
 }
